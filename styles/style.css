@@ -1,0 +1,329 @@
+/* Style pour la barre de navigation */
+nav {
+    background-color: #8a0605;
+    padding: 10px 0;
+    margin: 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrer horizontalement le contenu */
+    justify-content: center; /* Centrer verticalement */
+    border-bottom: 2mm solid #cb4b31;
+    text-align: center;
+}
+
+
+/* Titre de la troupe */
+nav h1 {
+    font-family: 'Inkpoint', sans-serif;
+    color: white;
+    font-size: 2em;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Liste de boutons de navigation */
+#nav-links {
+    display: flex;
+    justify-content: center; /* Centrer les liens */
+    flex-direction: row; /* Afficher les liens horizontalement */
+    gap: 20px; /* Espace égal entre les liens */
+    width: 100%; /* Prendre toute la largeur pour un centrage facile */
+}
+
+/* Style des boutons de navigation */
+#nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 5px 10px;
+    text-align: center;
+    display: block;
+    margin: 0 10px; /* Ajouter un espace entre chaque lien */
+}
+
+
+#nav-links a:hover {
+    color: #ffd700;
+}
+
+/* Style pour le lien actif */
+#nav-links a.active {
+    color: #ffd700; 
+}
+
+/* Style global pour le body */
+body {
+    background-color: #121111; /* Bleu très sombre */
+    margin: 0;
+    padding: 50px 0; /* Ajuste si besoin pour éviter que le contenu ne soit caché sous la navigation */
+    font-family: Arial, sans-serif;
+    color: white; /* Texte en blanc pour bien contraster avec le fond sombre */
+}
+
+/* Section avec image et texte centré */
+.center-content {
+    position: relative;
+    text-align: center;
+    margin-top: 200px; /* Ajuste selon la hauteur de la page */
+}
+
+.center-content img {
+    width: 50%; /* Taille de l'image */
+    height: auto;
+}
+
+.overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2em;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px #000; /* Ajoute un léger effet d'ombre sur le texte */
+}
+
+/* Positionnement des rideaux */
+.stage {
+    position: relative;
+    width: 100%;
+    height: 100vh; /* Toujours 100% de la hauteur de la fenêtre */
+    box-sizing: border-box;
+    overflow: hidden; /* Empêche tout débordement visuel des rideaux */
+}
+
+
+
+/* Rideau gauche */
+.gauche {
+    left: 0;
+    width: clamp(10%, 20vw, 20%);
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    z-index: 999;
+    transition: transform 0.5s ease; /* Transition fluide sur la translation */
+}
+
+/* Rideau droit */
+.droite {
+    right: 0;
+    width: clamp(10%, 20vw, 20%);
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    z-index: 999;
+    transition: transform 0.5s ease; /* Transition fluide sur la translation */
+}
+
+/* Conteneur du contenu */
+.content {
+    margin-top: 100vh; /* Pour avoir du contenu à défiler sous le premier écran */
+    padding: 20px;
+    background-color: #121111;
+    color: white;
+    font-size: 1.5em;
+    height: 2000px; /* Ajuste pour tester le scroll */
+}
+
+
+
+/* Conteneur pour l'affiche et le texte */
+.affiche-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    gap: 20px; /* Espace entre chaque élément */
+    z-index: -1;
+}
+
+/* Style de l'affiche */
+.affiche {
+    width: 400px;
+    height: auto;
+    margin-right: 0;
+}
+
+/* Bordure orange verticale */
+.bordure {
+    width: 5px;
+    height: 250px;
+    background-color: #CB4B31;
+    margin: 0;
+    flex-shrink: 0; /* Empêche la bordure de changer de taille */
+}
+
+/* Texte à droite avec une largeur fixe */
+.texte-a-droite {
+    color: white;
+    font-size: 1.2em;
+    text-align: left;
+    max-width: 300px; /* Limite la largeur du texte */
+    word-wrap: break-word;
+    overflow-wrap: break-word; /* Assure que le texte ne déborde pas */
+    white-space: normal; /* Le texte s'affichera sur plusieurs lignes si nécessaire */
+}
+
+
+/* Responsive en dessous de 768px */
+@media (max-width: 768px) {
+    /* Conteneur en colonne */
+    .affiche-container {
+        flex-direction: column;
+        align-items: center;
+        transform: translate(-50%, -50%);
+    }
+
+    /* Agrandir l'image et la centrer */
+    .affiche {
+        width: 40vw; /* Image prend 90% de la largeur de la fenêtre */
+        height: auto;
+        margin-right: 0;
+        margin-bottom: 20px; /* Espace en dessous de l'image */
+    }
+
+    /* Bordure orange horizontale */
+    .bordure {
+        width: 30vw; /* Bordure prend 90% de la largeur de l'image */
+        height: 5px;
+        background-color: #CB4B31;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 10px; /* Espace en dessous de la bordure */
+        margin-top: 10px; /*Espace au dessus*/
+    }
+
+    /* Texte centré sous la bordure */
+    .texte-a-droite {
+        text-align: center;
+        margin: 0;
+    }
+}
+
+
+
+/* bouton menu burger */
+#CmdMenu {
+    position: fixed; /* Pour le maintenir en place en défilant */
+    top: 15px;
+    left: 15px; /* Collé à gauche */
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1000; /* Assure qu'il soit au-dessus des autres éléments */
+}
+
+#CmdMenu:hover {	
+    color: #577bac;	
+}
+
+/* MOBILE FIRST */
+#nav-links {
+    flex-direction: column;
+    display: none; /* Masqué par défaut sur mobile */
+}
+
+/* TABLET - DESKTOP */
+@media (min-width: 769px) {
+    #nav-links {
+        flex-direction: row;
+        display: flex; /* Affichage en ligne sur grands écrans */
+    }
+    #CmdMenu { 
+        display: none;
+    }
+}
+
+/* TABLET */
+@media (min-width: 769px) and (max-width: 1200px) {
+    #nav-links a { 
+        padding: 5px 10px; 
+        margin: 0 2px;
+    }
+}
+
+/* DESKTOP */
+@media (min-width: 1201px) {
+    #nav-links a { 
+        margin: 0 5px;
+    }
+}
+/* Style du carrousel */
+.carrousel {
+    position: relative;
+    width: 80%; /* Largeur ajustable */
+    margin: 20px auto;
+    overflow: hidden; /* Masque les commentaires hors de vue */
+    background-color: #222; /* Fond sombre pour contraster avec le texte */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    margin-top: -150px;
+}
+
+/* Conteneur des commentaires */
+.carrousel-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* Commentaires individuels */
+.comment {
+    min-width: 100%; /* Chaque commentaire prend la largeur du conteneur */
+    text-align: center;
+    color: white;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Style du texte des commentaires */
+.comment p {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.comment span {
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+/* Boutons de navigation */
+.carrousel button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+    padding: 5px 10px;
+    z-index: 1000;
+    border-radius: 50%;
+}
+
+/* Bouton précédent */
+.carrousel .prev {
+    left: 10px;
+}
+
+/* Bouton suivant */
+.carrousel .next {
+    right: 10px;
+}
+
+.carrousel button:hover {
+    background-color: #555;
+}
+
+
