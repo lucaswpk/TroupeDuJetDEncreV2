@@ -1,0 +1,116 @@
+
+.form-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    max-width: 50%; 
+    gap: 100px; 
+    padding: 0;
+    z-index: 900;
+    margin-top: 150px;
+}
+
+
+
+/* Section de formulaire */
+.form-section {
+    flex: 1;
+    color: white; 
+    margin-top: -100px;
+}
+
+/* Titres des sections */
+.form-section h2 {
+    text-align: left;
+    margin-bottom: 10px;
+    color: #cb4b31;
+    font-size: 1.5em;
+}
+
+/* Labels des champs */
+.form-section label {
+    display: block;
+    margin-bottom: 5px;
+    margin-top: 20px;
+    font-weight: bold;
+    color: white;
+}
+
+/* Champs des formulaires */
+.form-section input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-bottom: 2px solid #cb4b31;
+    background-color: transparent;
+    color: white; 
+    font-size: 1em;
+    outline: none; /* Supprime le contour bleu au focus */
+    transition: border-color 0.3s ease;
+
+}
+
+/* Focus sur les champs */
+.form-section input:focus {
+    border-bottom: 2px solid #ffd700; /* Ligne dorée lorsqu'on tape dans le champ */
+}
+
+/* Placeholder */
+.form-section input::placeholder {
+    color: #bbb;
+    font-style: italic;
+    margin-bottom: 30px;
+}
+
+/* Boutons */
+.form-section button {
+    width: 100%;
+    padding: 10px;
+    background-color: #8a0605;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.form-section button:hover {
+    background-color: #cb4b31; 
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-container {
+        flex-direction: column; 
+        gap: 30px;
+        margin-top: 500px;
+    }
+    
+    .form-section h2 {
+        text-align: center; /* Centrer les titres sur mobile */
+        margin-top: -150px;
+    }
+    #inscription{
+        margin-top: 120px;
+    }
+    .form-section {
+        margin-bottom: 20px;
+        z-index: -3;
+    }
+
+}
+.profile{
+    display: flex; /* Active le mode flexbox */
+    flex-direction: column; /* Aligne les éléments enfants verticalement */
+    justify-content: center; /* Centre verticalement */
+    align-items: center; /* Centre horizontalement */
+    height: 100vh; /* Prend toute la hauteur de la fenêtre */
+    margin: 0 auto; /* Centre horizontalement si la largeur est définie */
+    margin-top: 530px;
+}
