@@ -5,7 +5,7 @@ require_once '../service/functions.php';
 
 // Vérifie que l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
-    header('Location: connexion.php'); // Redirection vers la page de connexion
+    header('Location: connexion.php'); 
     exit;
 }
 

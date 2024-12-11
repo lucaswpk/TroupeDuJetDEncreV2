@@ -1,7 +1,7 @@
 <?php
 // Inclure le fichier de connexion à la base de données
 require_once '../service/db_connexion.php';
-require_once '../service/functions.php'; // Inclure la constante BASE_URL
+require_once '../service/functions.php'; 
 
 // Requête pour récupérer les données des pièces et leurs acteurs depuis la vue
 $query = "SELECT play_id, play_title, play_description, play_date, picture_path, actor_names FROM view_plays_with_actors";

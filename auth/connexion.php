@@ -13,8 +13,13 @@ function sanitize($data) {
     return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
 }
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Vérifie le token CSRF
+
+    var_dump($data);
+    die;
+
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die("Requête invalide. Veuillez réessayer.");
     }
@@ -25,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($_POST['action'] === 'login') {
         // Gestion de la connexion
         $username = sanitize($_POST['login_username']);
-        $password = sanitize($_POST['login_password']);
+        $password = $_POST['login_password'];
 
         // Vérifie le nombre de tentatives échouées
         $stmt = $db_connexion->prepare("SELECT attempts, last_attempt FROM failed_logins WHERE username = :username");
@@ -76,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die("Nom d'utilisateur ou mot de passe incorrect.");
         }
     } elseif ($_POST['action'] === 'register') {
-        // Partie : Gestion de l'inscription
+        // Gestion de l'inscription
         $username = sanitize($_POST['register_username']);
         $password = sanitize($_POST['register_password']);
         $confirm_password = sanitize($_POST['register_confirm_password']);
@@ -86,12 +91,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $city = sanitize($_POST['city']);
         $cp = sanitize($_POST['cp']);
 
-        // Valide un mot de passe fort
+        // Je valide un mot de passe fort
         if (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$/', $password)) {
             die("Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.");
         }
 
-        // Vérifie si les mots de passe correspondent
+        // je vérifie si les mots de passe correspondent
         if ($password !== $confirm_password) {
             die("Les mots de passe ne correspondent pas.");
         }

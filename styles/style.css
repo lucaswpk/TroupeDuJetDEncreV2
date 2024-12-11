@@ -198,7 +198,7 @@ body {
 }
 
 
-/* Responsive en dessous de 768px */
+
 @media (max-width: 768px) {
     /* Conteneur en colonne */
     .affiche-container {
@@ -209,10 +209,10 @@ body {
 
     /* Agrandir l'image et la centrer */
     .affiche {
-        width: 40vw; /* Image prend 90% de la largeur de la fenêtre */
+        width: 40vw; 
         height: auto;
         margin-right: 0;
-        margin-bottom: 20px; /* Espace en dessous de l'image */
+        margin-bottom: 20px; 
     }
 
     /* Bordure orange horizontale */
