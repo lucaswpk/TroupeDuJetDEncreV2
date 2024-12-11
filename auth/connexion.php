@@ -17,9 +17,6 @@ function sanitize($data) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Vérifie le token CSRF
 
-    var_dump($data);
-    die;
-
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die("Requête invalide. Veuillez réessayer.");
     }
