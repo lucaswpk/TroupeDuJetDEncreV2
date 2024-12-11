@@ -3,14 +3,29 @@ session_start();
 require_once '../service/db_connexion.php';
 require_once '../service/functions.php'; // Inclure la constante BASE_URL
 
+// Génération du token CSRF si non existant
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
 
-
+// Fonction pour nettoyer les entrées utilisateur
+function sanitize($data) {
+    return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Vérifie le token CSRF
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        die("Requête invalide. Veuillez réessayer.");
+    }
+
+    // Régénère le token après utilisation
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
     if ($_POST['action'] === 'login') {
         // Gestion de la connexion
-        $username = htmlspecialchars(trim($_POST['login_username']), ENT_QUOTES, 'UTF-8');
-        $password = htmlspecialchars(trim($_POST['login_password']), ENT_QUOTES, 'UTF-8');
+        $username = sanitize($_POST['login_username']);
+        $password = sanitize($_POST['login_password']);
 
         // Vérifie le nombre de tentatives échouées
         $stmt = $db_connexion->prepare("SELECT attempts, last_attempt FROM failed_logins WHERE username = :username");
@@ -46,11 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['id_role'];
 
-            // génération du token CSRF
-            if (!isset($_SESSION['csrf_token'])) {
-                $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-            }
-
             header('Location: ../index.php');
             exit;
         } else {
@@ -67,14 +77,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($_POST['action'] === 'register') {
         // Partie : Gestion de l'inscription
-        $username = htmlspecialchars(trim($_POST['register_username']), ENT_QUOTES, 'UTF-8');
-        $password = htmlspecialchars(trim($_POST['register_password']), ENT_QUOTES, 'UTF-8');
-        $confirm_password = htmlspecialchars(trim($_POST['register_confirm_password']), ENT_QUOTES, 'UTF-8');
-        $name = htmlspecialchars(trim($_POST['name']), ENT_QUOTES, 'UTF-8');
-        $surname = htmlspecialchars(trim($_POST['surname']), ENT_QUOTES, 'UTF-8');
-        $adress = htmlspecialchars(trim($_POST['adress']), ENT_QUOTES, 'UTF-8');
-        $city = htmlspecialchars(trim($_POST['city']), ENT_QUOTES, 'UTF-8');
-        $cp = htmlspecialchars(trim($_POST['cp']), ENT_QUOTES, 'UTF-8');
+        $username = sanitize($_POST['register_username']);
+        $password = sanitize($_POST['register_password']);
+        $confirm_password = sanitize($_POST['register_confirm_password']);
+        $name = sanitize($_POST['name']);
+        $surname = sanitize($_POST['surname']);
+        $adress = sanitize($_POST['adress']);
+        $city = sanitize($_POST['city']);
+        $cp = sanitize($_POST['cp']);
 
         // Valide un mot de passe fort
         if (!preg_match('/^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$/', $password)) {
@@ -106,11 +116,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             echo "Inscription réussie ! Vous pouvez vous connecter.";
         } catch (PDOException $e) {
-            die("Erreur lors de l'inscription : " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8'));
+            die("Erreur lors de l'inscription : " . sanitize($e->getMessage()));
         }
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -126,7 +137,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- Appel de la Navbar -->
 <?php include '../component/navbar.php'; ?>
 
-
 <!-- Rideaux -->
 <img src="../image/rideau_gauche.png" alt="Rideau gauche" class="gauche">
 <img src="../image/Rideau_droit.png" alt="Rideau droit" class="droite">
@@ -137,7 +147,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="form-section">
         <h2>Connexion</h2>
         <form action="connexion.php" method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <input type="hidden" name="action" value="login">
+
             <label for="login-username">Nom d'utilisateur</label>
             <input type="text" id="login-username" name="login_username" placeholder="Votre nom d'utilisateur" required>
 
@@ -145,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="password" id="login-password" name="login_password" placeholder="Votre mot de passe" required>
 
             <button type="submit">Se connecter</button>
-            <?php if (isset($login_error)) echo "<p class='error'>$login_error</p>"; ?>
+            <?php if (isset($login_error)) echo "<p class='error'>" . sanitize($login_error) . "</p>"; ?>
         </form>
     </div>
 
@@ -155,7 +167,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="form-section">
         <h2 id="inscription">Inscription</h2>
         <form action="connexion.php" method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             <input type="hidden" name="action" value="register">
+
             <label for="register-username">Nom d'utilisateur</label>
             <input type="text" id="register-username" name="register_username" placeholder="Votre nom d'utilisateur" required>
 
@@ -181,8 +195,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="password" id="register-confirm-password" name="register_confirm_password" placeholder="Confirmez votre mot de passe" required>
 
             <button type="submit">S'inscrire</button>
-            <?php if (isset($register_error)) echo "<p class='error'>$register_error</p>"; ?>
-            <?php if (isset($register_success)) echo "<p class='success'>$register_success</p>"; ?>
+            <?php if (isset($register_error)) echo "<p class='error'>" . sanitize($register_error) . "</p>"; ?>
+            <?php if (isset($register_success)) echo "<p class='success'>" . sanitize($register_success) . "</p>"; ?>
         </form>
     </div>
 </div>
