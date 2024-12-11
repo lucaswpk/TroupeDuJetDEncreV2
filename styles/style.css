@@ -105,7 +105,7 @@ body {
     color: white;
     font-size: 2em;
     font-weight: bold;
-    text-shadow: 2px 2px 8px #000; /* Ajoute un léger effet d'ombre sur le texte */
+    text-shadow: 2px 2px 8px #000; 
 }
 
 .stage {
